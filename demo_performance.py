@@ -20,15 +20,19 @@ def measure(iterations=10, init_iterations=2, batch_size=4, use_jit=True, use_ha
     print("Init Model")
     device = get_device()
     dtype = torch.half if use_half else torch.float32
-    resnet50 = torchvision.models.resnet50(pretrained=True, progress=True)
+    model = torchvision.models.mobilenet_v3_small(pretrained=True, progress=True)
     memory_before_init = GPUtil.getGPUs()[0].memoryUsed
+    image_size = 512
 
-    model = resnet50.eval().requires_grad_(False).to(dtype).to(device)
+    model = model.eval().requires_grad_(False).to(dtype).to(device)
+    if use_jit:
+        mock_tensor = torch.randn((batch_size, 3, image_size, image_size)).to(dtype).to(device)
+        model = torch.jit.trace(model, mock_tensor)
 
     memory_after_init = GPUtil.getGPUs()[0].memoryUsed
     torch.cuda.synchronize(device)
 
-    frames = torch.randn((batch_size * iterations, 3, 512, 512)).to(dtype)
+    frames = torch.randn((batch_size * iterations, 3, image_size, image_size)).to(dtype)
     print("Test with data")
 
     times = []
@@ -52,7 +56,7 @@ def measure(iterations=10, init_iterations=2, batch_size=4, use_jit=True, use_ha
 
 
 def main():
-    measure(use_half=False, use_jit=False, batch_size=4)
+    measure(use_half=False, use_jit=False, batch_size=1)
 
 
 if __name__ == "__main__":
