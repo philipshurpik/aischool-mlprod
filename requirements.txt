@@ -1,0 +1,4 @@
+torch
+torchvision
+GPUtil==1.4.0
+numpy
