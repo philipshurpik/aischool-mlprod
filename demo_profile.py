@@ -1,3 +1,8 @@
+'''
+For more details look here:
+https://pytorch.org/tutorials/recipes/recipes/profiler_recipe.html
+'''
+
 import torch
 import torchvision
 from torch.profiler import profile, record_function, ProfilerActivity
