@@ -33,9 +33,10 @@ def processing(im_frames):
     print('processing', im_frames.shape)
     resized = [resize(frame, (256, 256)) for frame in im_frames]
     results = [model(torch.tensor(frame).permute(2, 0, 1).div(255).unsqueeze(0).to(device)) for frame in resized]
-    print('mean result value',np.array([x.cpu().numpy().argmax() for x in results]).mean())
     [resize(frame, (3840, 2160)) for frame in resized]
-    return [x.cpu().numpy().argmax() for x in results]
+    max_ = [x.cpu().numpy().argmax() for x in results]
+    print('mean result value',np.array(max_).mean())
+    return max_
 
 
 def run_single_thread(frames):
