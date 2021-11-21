@@ -16,7 +16,7 @@ def run_single_thread():
     print('Elapsed time:', end - start)
 
 
-def run_multi_thread(cores=1):
+def run_multi_thread(cores=4):
     start = time.time()
     threads = [Thread(target=countdown, args=(COUNT // cores,)) for _ in range(cores)]
     [t.start() for t in threads]
