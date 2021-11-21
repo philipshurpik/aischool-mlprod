@@ -6,6 +6,7 @@ torch.set_num_threads(1)
 
 import torchvision
 
+device = 'cpu'
 model = torchvision.models.mobilenet_v3_large(pretrained=True, progress=True)
 model = model.eval().requires_grad_(False).to(torch.float32).to(device)
 
