@@ -8,15 +8,21 @@ from threading import Thread
 from PIL import Image
 import numpy as np
 import torch
+torch.set_num_threads(1)
+
 import torchvision
 from multiprocessing import Pool, Process
 import SharedArray as sa
 
 model = torchvision.models.mobilenet_v3_small(pretrained=True, progress=True)
-model = model.eval().requires_grad_(False).to(torch.float32).to('cpu')
-
-torch.set_num_threads(1)
+# change for cuda
+device = 'cpu'
 CORES = 8
+# import multiprocessing as mp
+# mp.set_start_method('spawn')
+#
+model = model.eval().requires_grad_(False).to(torch.float32).to(device)
+
 
 
 def resize(image, shape):
@@ -26,9 +32,10 @@ def resize(image, shape):
 def processing(im_frames):
     print('processing', im_frames.shape)
     resized = [resize(frame, (256, 256)) for frame in im_frames]
-    results = [model(torch.tensor(frames[0]).permute(2, 0, 1).div(255).unsqueeze(0))for frame in resized]
+    results = [model(torch.tensor(frame).permute(2, 0, 1).div(255).unsqueeze(0).to(device)) for frame in resized]
+    print('mean result value',np.array([x.cpu().numpy().argmax() for x in results]).mean())
     [resize(frame, (3840, 2160)) for frame in resized]
-    return [x.numpy().argmax() for x in results]
+    return [x.cpu().numpy().argmax() for x in results]
 
 
 def run_single_thread(frames):
@@ -65,7 +72,7 @@ def processing_shm(shm_name, shape, start_index, end_index):
 
 
 def make_shared_np_array(frames):
-    name = "shm://test3"
+    name = "shm://test6"
     shm = sa.create(name, frames.shape, dtype=np.uint8)
     shm[:] = frames[:]
     return name
