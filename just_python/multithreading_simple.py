@@ -14,7 +14,7 @@ import torchvision
 from multiprocessing import Pool, Process
 import SharedArray as sa
 
-model = torchvision.models.mobilenet_v3_small(pretrained=True, progress=True)
+model = torchvision.models.mobilenet_v3_large(pretrained=True, progress=True)
 # change for cuda
 device = 'cpu'
 CORES = 8
@@ -22,7 +22,6 @@ CORES = 8
 # mp.set_start_method('spawn')
 #
 model = model.eval().requires_grad_(False).to(torch.float32).to(device)
-
 
 
 def resize(image, shape):
@@ -114,4 +113,4 @@ if __name__ == '__main__':
     time.sleep(2)
     run_multi_process_shm(frames)
     time.sleep(2)
-    run_multi_process_shm_no_pool(frames)
+    # run_multi_process_shm_no_pool(frames)
