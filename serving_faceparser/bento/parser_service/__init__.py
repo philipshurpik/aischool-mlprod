@@ -1,3 +1,3 @@
-from bento.parser_service.config import Config
+from parser_service.config import Config
 
 config = Config()

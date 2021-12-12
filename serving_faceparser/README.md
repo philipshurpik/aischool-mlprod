@@ -5,3 +5,8 @@
 python setup.py install
 ```
 
+### Serve BentoML
+```
+python make_service.py
+bentoml serve FaceParserService:latest
+```

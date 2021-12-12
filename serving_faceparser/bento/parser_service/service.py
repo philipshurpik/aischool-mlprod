@@ -8,8 +8,9 @@ import cv2
 from bentoml.types import InferenceError, InferenceResult
 from face_parser import FaceParser
 
-from bento.parser_service import config
-from bento.parser_service.validators import InferenceData
+from parser_service import config
+from parser_service.validators import InferenceData
+from parser_service.adapters import ImageDataInput
 
 
 class FaceParserService(bentoml.BentoService):
@@ -21,6 +22,7 @@ class FaceParserService(bentoml.BentoService):
                 use_half=config.half_precision,
             )
 
+    @bentoml.api(input=ImageDataInput(), batch=True)
     def predict(self, tasks_list: List[InferenceData]) -> List[InferenceResult]:
         results = []
         try:
