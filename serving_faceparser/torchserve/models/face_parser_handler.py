@@ -40,7 +40,7 @@ class FaceParserHandler(BaseHandler):
         self.initialized = False
         self.model = None
         self.device = f"cuda:{torch.cuda.device_count() - 1}"
-        self.face_parser = FaceParser(device=self.device, load_model=False)
+        self.face_parser = FaceParser(device=self.device)
         self.device = torch.device(self.device)
 
     def initialize(self, context):
