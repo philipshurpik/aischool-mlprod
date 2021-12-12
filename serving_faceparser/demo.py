@@ -36,6 +36,6 @@ if __name__ == '__main__':
 
     imsave('output/musk_head_traced.png', result_traced)
 
-    assert result.mean() == result_traced.mean()
+    assert abs(result.mean() - result_traced.mean()) < 0.01
     print('ok')
 
