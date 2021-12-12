@@ -2,3 +2,5 @@ torch
 torchvision
 GPUtil==1.4.0
 numpy
+BentoML==0.13.1
+pydantic==1.8.2
