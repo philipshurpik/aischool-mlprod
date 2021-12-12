@@ -26,7 +26,7 @@ if __name__ == '__main__':
     torch.set_grad_enabled(False)
     traced_model = torch.jit.trace(faceparser.model, (image_example.to(faceparser.device)))
 
-    ts_file_path = 'weights/faceparser_bisenet.ts'
+    ts_file_path = 'face_parser/weights/faceparser_bisenet.ts'
     torch.jit.save(traced_model, ts_file_path)
     ts_model_loaded = torch.jit.load(ts_file_path)
 

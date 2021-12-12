@@ -3,7 +3,7 @@ import torch
 import cv2
 import numpy as np
 
-from models.bisenet import BiSeNet
+from .models.bisenet import BiSeNet
 from torchvision.transforms import Normalize
 
 
