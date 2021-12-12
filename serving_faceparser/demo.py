@@ -26,13 +26,13 @@ if __name__ == '__main__':
     torch.set_grad_enabled(False)
     traced_model = torch.jit.trace(faceparser.model, (image_example.to(faceparser.device)))
 
-    ts_file_path = 'face_parser/weights/faceparser_bisenet.ts'
+    ts_file_path = 'torchserve/models/weights/faceparser_bisenet.ts'
     torch.jit.save(traced_model, ts_file_path)
     ts_model_loaded = torch.jit.load(ts_file_path)
 
     image_tensor = faceparser.preprocess([image])
-    ts_model_loaded(image_tensor)
-    result_traced = faceparser.postprocess(traced_model(image_tensor), [image])[0]
+    result = ts_model_loaded(image_tensor)
+    result_traced = faceparser.postprocess(result, [image])[0]
 
     imsave('output/musk_head_traced.png', result_traced)
 
