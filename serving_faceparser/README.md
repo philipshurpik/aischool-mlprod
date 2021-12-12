@@ -15,7 +15,7 @@ bentoml serve FaceParserService:latest
 
 ### Create torchserve mar file
 ```
-torch-model-archiver -f --model-name rainnet --version 1.0 --serialized-file models/rainnet/weights/rainnet_netG_latest.ts --handler models/rainnet/rainnet_handler.py --export-path model_store
+torch-model-archiver -f --model-name faceparser --version 1.0 --serialized-file models/weights/faceparser_bisenet.ts --handler models/face_parser_handler.py --export-path model_store
 ```
 
 ### Start torchserve
@@ -28,3 +28,7 @@ torchserve --start --model-store model_store/ --models faceparser=faceparser.mar
 curl http://127.0.0.1:8080/predictions/faceparser -F "image=@data/images/musk.jpg"
 ```
 
+### Stop torchserve
+```
+torchserve --stop
+```
