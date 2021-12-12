@@ -1,7 +1,6 @@
 import logging
 import os
 import io
-import pickle
 import cv2
 
 import numpy as np
